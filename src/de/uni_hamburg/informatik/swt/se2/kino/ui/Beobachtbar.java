@@ -39,7 +39,7 @@ public abstract class Beobachtbar
 	{
 		for(Beobachter beobachter : _allebeobachter)
 		{
-			beobachter.beachteAenderung();
+			beobachter.beachteAenderung(this);
 		}
 	}
 	

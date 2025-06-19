@@ -3,6 +3,7 @@ package de.uni_hamburg.informatik.swt.se2.kino.ui.kasse;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Kino;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Tagesplan;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Vorstellung;
+import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachtbar;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachter;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.datumsauswaehler.DatumAuswaehlController;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.platzverkauf.PlatzVerkaufsController;
@@ -17,7 +18,7 @@ import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Datum;
  * @author SE2-Team
  * @version SoSe 2024
  */
-public class KassenController
+public class KassenController implements Beobachter
 {
     // Die Entität, die durch dieses UI-Modul verwaltet wird.
     private Kino _kino;
@@ -53,8 +54,8 @@ public class KassenController
                 _datumAuswaehlController.getUIPanel(),
                 _vorstellungAuswaehlController.getUIPanel());
         
-        erzeugeBeobachterFuer();
-
+        
+        registiereBeobachter();
         registriereUIAktionen();
         setzeTagesplanFuerAusgewaehltesDatum();
         setzeAusgewaehlteVorstellung();
@@ -63,27 +64,23 @@ public class KassenController
     }
     
     
-    
-    private void erzeugeBeobachterFuer()
+    private void registiereBeobachter()
     {
-    	_datumAuswaehlController.fuegeBeobachterHinzu(new Beobachter()
+    	_datumAuswaehlController.fuegeBeobachterHinzu(this);
+    	_vorstellungAuswaehlController.fuegeBeobachterHinzu(this);
+    }
+    
+    
+    public void beachteAenderung(Beobachtbar beobachtetesObjekt)
+    {
+    	if(beobachtetesObjekt == _datumAuswaehlController)
     	{
-    		@Override
-    		public void beachteAenderung()
-    		{
-    			setzeTagesplanFuerAusgewaehltesDatum();
-    		}
-    	});
-    	
-    	_vorstellungAuswaehlController.fuegeBeobachterHinzu(new Beobachter()
+    		setzeTagesplanFuerAusgewaehltesDatum();
+    	}
+    	else if(beobachtetesObjekt == _vorstellungAuswaehlController)
     	{
-    		@Override
-    		public void beachteAenderung()
-    		{
-    			setzeAusgewaehlteVorstellung();
-    		}
-    	
-    	});
+    		setzeAusgewaehlteVorstellung();
+    	}
     }
     
     

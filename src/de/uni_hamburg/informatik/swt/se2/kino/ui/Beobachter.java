@@ -6,5 +6,5 @@ public interface Beobachter
 	 * Wenn eine Aenderung vorgenommen wird, soll darauf reagiert werden.
 	 * Die Aenderungen werden in den Subwerkzeugen gemacht. 
 	 */
-	 public void beachteAenderung();
+	 public void beachteAenderung(Beobachtbar quelle);
 }
