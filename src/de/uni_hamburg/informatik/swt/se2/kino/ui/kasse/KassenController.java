@@ -3,6 +3,7 @@ package de.uni_hamburg.informatik.swt.se2.kino.ui.kasse;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Kino;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Tagesplan;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Vorstellung;
+import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachter;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.datumsauswaehler.DatumAuswaehlController;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.platzverkauf.PlatzVerkaufsController;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.vorstellungsauswaehler.VorstellungsAuswaehlController;
@@ -36,7 +37,7 @@ public class KassenController
      * 
      * @require kino != null
      */
-    public KassenController(Kino kino)
+    public KassenController(Kino kino) 
     {
         assert kino != null : "Vorbedingung verletzt: kino != null";
 
@@ -51,6 +52,8 @@ public class KassenController
         _view = new KassenView(_platzVerkaufsController.getUIPanel(),
                 _datumAuswaehlController.getUIPanel(),
                 _vorstellungAuswaehlController.getUIPanel());
+        
+        erzeugeBeobachterFuer();
 
         registriereUIAktionen();
         setzeTagesplanFuerAusgewaehltesDatum();
@@ -58,6 +61,32 @@ public class KassenController
 
         _view.zeigeFenster();
     }
+    
+    
+    
+    private void erzeugeBeobachterFuer()
+    {
+    	_datumAuswaehlController.fuegeBeobachterHinzu(new Beobachter()
+    	{
+    		@Override
+    		public void beachteAenderung()
+    		{
+    			setzeTagesplanFuerAusgewaehltesDatum();
+    		}
+    	});
+    	
+    	_vorstellungAuswaehlController.fuegeBeobachterHinzu(new Beobachter()
+    	{
+    		@Override
+    		public void beachteAenderung()
+    		{
+    			setzeAusgewaehlteVorstellung();
+    		}
+    	
+    	});
+    }
+    
+    
 
     /**
      * Fügt die Funktionalitat zum Beenden-Button hinzu.
@@ -109,4 +138,8 @@ public class KassenController
     {
         return _vorstellungAuswaehlController.getAusgewaehlteVorstellung();
     }
+
+
+
+
 }
