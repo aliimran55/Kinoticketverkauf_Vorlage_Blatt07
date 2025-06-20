@@ -56,6 +56,7 @@ public class KassenController implements Beobachter
         
         
         registiereBeobachter();
+        
         registriereUIAktionen();
         setzeTagesplanFuerAusgewaehltesDatum();
         setzeAusgewaehlteVorstellung();
