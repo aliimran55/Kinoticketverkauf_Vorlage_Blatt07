@@ -3,10 +3,12 @@ package de.uni_hamburg.informatik.swt.se2.kino.ui;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Eine abstrakte Klasse, welches das Beobachter Muster erfuellt. Jede Klasse, die beobachtet werden will, muss von dieser Klasse erben. 
+ */
 public abstract class Beobachtbar
 {
 	private Set<Beobachter> _allebeobachter;
-	
 	
 	
 	/*

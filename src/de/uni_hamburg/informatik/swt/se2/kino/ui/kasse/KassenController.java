@@ -56,7 +56,6 @@ public class KassenController implements Beobachter
         
         
         erzeugeBeobachter();
-        
         registriereUIAktionen();
         setzeTagesplanFuerAusgewaehltesDatum();
         setzeAusgewaehlteVorstellung();
@@ -64,14 +63,21 @@ public class KassenController implements Beobachter
         _view.zeigeFenster();
     }
     
-    
+    /**
+     * Erzeugt Beobachter für alle beobachteten Objekte. 
+     */
     private void erzeugeBeobachter()
     {
     	_datumAuswaehlController.fuegeBeobachterHinzu(this);
     	_vorstellungAuswaehlController.fuegeBeobachterHinzu(this);
+    	_platzVerkaufsController.fuegeBeobachterHinzu(this);
     }
     
-    
+    /**
+     * Beachte Aenderung für alle beobachteten Objekte
+     * 
+     * @param beobachtetesObjekt das Objekt, welches die Methode aufruft
+     */
     public void beachteAenderung(Beobachtbar beobachtetesObjekt)
     {
     	if(beobachtetesObjekt == _datumAuswaehlController)
