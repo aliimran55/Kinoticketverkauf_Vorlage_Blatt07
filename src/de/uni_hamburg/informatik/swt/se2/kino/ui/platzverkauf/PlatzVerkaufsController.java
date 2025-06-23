@@ -2,6 +2,7 @@ package de.uni_hamburg.informatik.swt.se2.kino.ui.platzverkauf;
 
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Kinosaal;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Vorstellung;
+import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachtbar;
 import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Platz;
 
 import javax.swing.JPanel;
@@ -18,7 +19,7 @@ import java.util.Set;
  * @author SE2-Team
  * @version SoSe 2024
  */
-public class PlatzVerkaufsController
+public class PlatzVerkaufsController extends Beobachtbar
 {
     // Die aktuelle Vorstellung, deren Plätze angezeigt werden. Kann null sein.
     private Vorstellung _vorstellung;
@@ -157,6 +158,7 @@ public class PlatzVerkaufsController
         Set<Platz> plaetze = _view.getPlatzplan().getAusgewaehltePlaetze();
         vorstellung.verkaufePlaetze(plaetze);
         aktualisierePlatzplan();
+        meldeAenderung();
     }
 
     /**
@@ -165,7 +167,9 @@ public class PlatzVerkaufsController
     private void stornierePlaetze(Vorstellung vorstellung)
     {
         Set<Platz> plaetze = _view.getPlatzplan().getAusgewaehltePlaetze();
-        vorstellung.stornierePlaetze(plaetze);
+        vorstellung.stornierePlaetze
+        (plaetze);
         aktualisierePlatzplan();
+        meldeAenderung();
     }
 }

@@ -55,7 +55,7 @@ public class KassenController implements Beobachter
                 _vorstellungAuswaehlController.getUIPanel());
         
         
-        registiereBeobachter();
+        erzeugeBeobachter();
         
         registriereUIAktionen();
         setzeTagesplanFuerAusgewaehltesDatum();
@@ -65,7 +65,7 @@ public class KassenController implements Beobachter
     }
     
     
-    private void registiereBeobachter()
+    private void erzeugeBeobachter()
     {
     	_datumAuswaehlController.fuegeBeobachterHinzu(this);
     	_vorstellungAuswaehlController.fuegeBeobachterHinzu(this);
@@ -79,6 +79,10 @@ public class KassenController implements Beobachter
     		setzeTagesplanFuerAusgewaehltesDatum();
     	}
     	else if(beobachtetesObjekt == _vorstellungAuswaehlController)
+    	{
+    		setzeAusgewaehlteVorstellung();
+    	}
+    	else if(beobachtetesObjekt == _platzVerkaufsController)
     	{
     		setzeAusgewaehlteVorstellung();
     	}

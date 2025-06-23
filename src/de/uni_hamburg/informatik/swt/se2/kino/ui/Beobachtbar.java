@@ -10,7 +10,7 @@ public abstract class Beobachtbar
 	
 	
 	/*
-	 * Erzeugung der Klasse und eine initialisiert dabei eine Liste alle Beobachter. 
+	 * Erzeugung der Klasse und initialisiert dabei eine Liste alle Beobachter. 
 	 */
 	public Beobachtbar()
 	{
