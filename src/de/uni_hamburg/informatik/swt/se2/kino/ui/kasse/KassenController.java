@@ -3,8 +3,6 @@ package de.uni_hamburg.informatik.swt.se2.kino.ui.kasse;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Kino;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Tagesplan;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Vorstellung;
-import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachtbar;
-import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachter;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.datumsauswaehler.DatumAuswaehlController;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.platzverkauf.PlatzVerkaufsController;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.vorstellungsauswaehler.VorstellungsAuswaehlController;
@@ -18,7 +16,7 @@ import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Datum;
  * @author SE2-Team
  * @version SoSe 2024
  */
-public class KassenController implements Beobachter
+public class KassenController
 {
     // Die Entität, die durch dieses UI-Modul verwaltet wird.
     private Kino _kino;
@@ -38,7 +36,7 @@ public class KassenController implements Beobachter
      * 
      * @require kino != null
      */
-    public KassenController(Kino kino) 
+    public KassenController(Kino kino)
     {
         assert kino != null : "Vorbedingung verletzt: kino != null";
 
@@ -53,8 +51,7 @@ public class KassenController implements Beobachter
         _view = new KassenView(_platzVerkaufsController.getUIPanel(),
                 _datumAuswaehlController.getUIPanel(),
                 _vorstellungAuswaehlController.getUIPanel());
-        
-        
+
         erzeugeBeobachter();
         registriereUIAktionen();
         setzeTagesplanFuerAusgewaehltesDatum();
@@ -62,46 +59,43 @@ public class KassenController implements Beobachter
 
         _view.zeigeFenster();
     }
-    
+
     /**
      * Erzeugt Beobachter für alle beobachteten Objekte. 
      */
     private void erzeugeBeobachter()
     {
-    	_datumAuswaehlController.fuegeBeobachterHinzu(this);
-    	_vorstellungAuswaehlController.fuegeBeobachterHinzu(this);
-    	_platzVerkaufsController.fuegeBeobachterHinzu(this);
+        _datumAuswaehlController.fuegeBeobachterHinzu(
+                beobachtetesObjekt -> setzeTagesplanFuerAusgewaehltesDatum());
+        _vorstellungAuswaehlController
+            .fuegeBeobachterHinzu(b -> setzeAusgewaehlteVorstellung());
+
     }
-    
-    /**
-     * Beachte Aenderung für alle beobachteten Objekte
-     * 
-     * @param beobachtetesObjekt das Objekt, welches die Methode aufruft
-     */
-    public void beachteAenderung(Beobachtbar beobachtetesObjekt)
-    {
-    	if(beobachtetesObjekt == _datumAuswaehlController)
-    	{
-    		setzeTagesplanFuerAusgewaehltesDatum();
-    	}
-    	else if(beobachtetesObjekt == _vorstellungAuswaehlController)
-    	{
-    		setzeAusgewaehlteVorstellung();
-    	}
-    	else if(beobachtetesObjekt == _platzVerkaufsController)
-    	{
-    		setzeAusgewaehlteVorstellung();
-    	}
-    }
-    
-    
+
+    //    /**
+    //     * Beachte Aenderung für alle beobachteten Objekte
+    //     * 
+    //     * @param beobachtetesObjekt das Objekt, welches die Methode aufruft
+    //     */
+    //    public void beachteAenderung(Beobachtbar beobachtetesObjekt)
+    //    {
+    //    	if(beobachtetesObjekt == _datumAuswaehlController)
+    //    	{
+    //    		setzeTagesplanFuerAusgewaehltesDatum();
+    //    	}
+    //    	else if(beobachtetesObjekt == _vorstellungAuswaehlController)
+    //    	{
+    //    		setzeAusgewaehlteVorstellung();
+    //    	}
+    //    }
 
     /**
      * Fügt die Funktionalitat zum Beenden-Button hinzu.
      */
     private void registriereUIAktionen()
     {
-        _view.getBeendenButton().addActionListener(e -> reagiereAufBeendenButton());
+        _view.getBeendenButton()
+            .addActionListener(e -> reagiereAufBeendenButton());
     }
 
     /**
@@ -146,8 +140,5 @@ public class KassenController implements Beobachter
     {
         return _vorstellungAuswaehlController.getAusgewaehlteVorstellung();
     }
-
-
-
 
 }
